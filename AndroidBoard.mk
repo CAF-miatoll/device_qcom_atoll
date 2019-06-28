@@ -118,5 +118,5 @@ include device/qcom/common/generate_extra_images.mk
 # wlan specific
 #----------------------------------------------------------------------
 ifeq ($(strip $(BOARD_HAS_QCOM_WLAN)),true)
-include device/qcom/wlan/talos/AndroidBoardWlan.mk
+include device/qcom/wlan/atoll/AndroidBoardWlan.mk
 endif
