@@ -11,6 +11,8 @@ BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
 #target name, shall be used in all makefiles
 ATOLL = atoll
 
+TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
+
 $(call inherit-product, device/qcom/qssi/common64.mk)
 
 PRODUCT_NAME := atoll
@@ -62,8 +64,6 @@ PRODUCT_PACKAGES += libGLES_android
 PRODUCT_BOOT_JARS += tcmiface
 PRODUCT_BOOT_JARS += telephony-ext
 PRODUCT_PACKAGES += telephony-ext
-
-TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 TARGET_DISABLE_QTI_VPP := true
 
