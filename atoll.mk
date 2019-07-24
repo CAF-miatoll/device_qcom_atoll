@@ -104,7 +104,7 @@ AUDIO_DLKM += audio_va_macro.ko
 AUDIO_DLKM += audio_rx_macro.ko
 AUDIO_DLKM += audio_tx_macro.ko
 
-PRODUCT_PACKAGES += $(AUDIO_DLKM)
+#PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
 PRODUCT_PACKAGES += fs_config_files
 
