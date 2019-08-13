@@ -1,7 +1,9 @@
 # Default A/B configuration.
 ENABLE_AB ?= true
-BOARD_DYNAMIC_PARTITION_ENABLE ?= true
 
+# Enable Dynamic partition and set API level to 29
+BOARD_DYNAMIC_PARTITION_ENABLE := true
+PRODUCT_SHIPPING_API_LEVEL := 29
 
 TARGET_DEFINES_DALVIK_HEAP := true
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
