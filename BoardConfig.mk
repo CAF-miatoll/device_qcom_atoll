@@ -104,13 +104,11 @@ BOARD_PREBUILT_DTBOIMAGE := out/target/product/atoll/prebuilt_dtbo.img
 BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/audio_apr.ko \
     $(KERNEL_MODULES_OUT)/audio_snd_event.ko \
-    $(KERNEL_MODULES_OUT)/audio_wglink.ko \
     $(KERNEL_MODULES_OUT)/audio_q6_pdr.ko \
     $(KERNEL_MODULES_OUT)/audio_q6_notifier.ko \
     $(KERNEL_MODULES_OUT)/audio_adsp_loader.ko \
     $(KERNEL_MODULES_OUT)/audio_q6.ko \
     $(KERNEL_MODULES_OUT)/audio_usf.ko \
-    $(KERNEL_MODULES_OUT)/audio_pinctrl_wcd.ko \
     $(KERNEL_MODULES_OUT)/audio_pinctrl_lpi.ko \
     $(KERNEL_MODULES_OUT)/audio_swr.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd_core.ko \
@@ -120,23 +118,23 @@ BOARD_VENDOR_KERNEL_MODULES := \
     $(KERNEL_MODULES_OUT)/audio_stub.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd9xxx.ko \
     $(KERNEL_MODULES_OUT)/audio_mbhc.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd934x.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd937x.ko \
     $(KERNEL_MODULES_OUT)/audio_wcd937x_slave.ko \
+    $(KERNEL_MODULES_OUT)/audio_wcd938x.ko \
+    $(KERNEL_MODULES_OUT)/audio_wcd938x_slave.ko \
     $(KERNEL_MODULES_OUT)/audio_bolero_cdc.ko \
     $(KERNEL_MODULES_OUT)/audio_wsa_macro.ko \
     $(KERNEL_MODULES_OUT)/audio_va_macro.ko \
     $(KERNEL_MODULES_OUT)/audio_rx_macro.ko \
     $(KERNEL_MODULES_OUT)/audio_tx_macro.ko \
-    $(KERNEL_MODULES_OUT)/audio_wcd_spi.ko \
-    $(KERNEL_MODULES_OUT)/audio_native.ko
-BOARD_VENDOR_KERNEL_MODULES := \
+    $(KERNEL_MODULES_OUT)/audio_native.ko \
+    $(KERNEL_MODULES_OUT)/audio_platform.ko \
+    $(KERNEL_MODULES_OUT)/audio_machine_atoll.ko \
     $(KERNEL_MODULES_OUT)/wil6210.ko \
     $(KERNEL_MODULES_OUT)/msm_11ad_proxy.ko \
     $(KERNEL_MODULES_OUT)/mpq-adapter.ko \
     $(KERNEL_MODULES_OUT)/mpq-dmx-hw-plugin.ko
-#    $(KERNEL_MODULES_OUT)/audio_platform.ko
-#    $(KERNEL_MODULES_OUT)/audio_machine_atoll.ko
+
 
 BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
