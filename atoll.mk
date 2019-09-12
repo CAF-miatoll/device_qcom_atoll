@@ -17,7 +17,7 @@ $(call inherit-product, device/qcom/qssi/common64.mk)
 
 PRODUCT_NAME := atoll
 PRODUCT_DEVICE := atoll
-PRODUCT_BRAND := Android
+PRODUCT_BRAND := qti
 PRODUCT_MODEL := atoll for arm64
 
 #Initial bringup flags
