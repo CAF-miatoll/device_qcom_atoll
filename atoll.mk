@@ -1,6 +1,14 @@
 # Enable AVB 2.0
 BOARD_AVB_ENABLE := true
 
+TARGET_DEFINES_DALVIK_HEAP := true
+#Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
+RODUCT_PROPERTY_OVERRIDES  += \
+   dalvik.vm.heapstartsize=8m \
+   dalvik.vm.heapsize=512m \
+   dalvik.vm.heaptargetutilization=0.75 \
+   dalvik.vm.heapminfree=512k \
+   dalvik.vm.heapmaxfree=8m
 
 # Enable chain partition for system, to facilitate system-only OTA in Treble.
 BOARD_AVB_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
