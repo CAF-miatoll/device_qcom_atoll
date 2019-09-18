@@ -4,6 +4,23 @@ ENABLE_AB ?= true
 # Enable Dynamic partition and set API level to 29
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 PRODUCT_SHIPPING_API_LEVEL := 29
+# f2fs utilities
+PRODUCT_PACKAGES += \
+ sg_write_buffer \
+ f2fs_io \
+ check_f2fs
+
+# Userdata checkpoint
+PRODUCT_PACKAGES += \
+ checkpoint_gc
+
+ifeq ($(ENABLE_AB), true)
+  AB_OTA_POSTINSTALL_CONFIG += \
+  RUN_POSTINSTALL_vendor=true \
+  POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+  FILESYSTEM_TYPE_vendor=ext4 \
+  POSTINSTALL_OPTIONAL_vendor=true
+endif
 
 TARGET_DEFINES_DALVIK_HEAP := true
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
