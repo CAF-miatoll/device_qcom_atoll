@@ -1,5 +1,26 @@
-# Enable AVB 2.0
-BOARD_AVB_ENABLE := true
+# Default A/B configuration.
+ENABLE_AB ?= true
+
+# Enable Dynamic partition and set API level to 29
+BOARD_DYNAMIC_PARTITION_ENABLE := true
+PRODUCT_SHIPPING_API_LEVEL := 29
+# f2fs utilities
+PRODUCT_PACKAGES += \
+ sg_write_buffer \
+ f2fs_io \
+ check_f2fs
+
+# Userdata checkpoint
+PRODUCT_PACKAGES += \
+ checkpoint_gc
+
+ifeq ($(ENABLE_AB), true)
+  AB_OTA_POSTINSTALL_CONFIG += \
+  RUN_POSTINSTALL_vendor=true \
+  POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+  FILESYSTEM_TYPE_vendor=ext4 \
+  POSTINSTALL_OPTIONAL_vendor=true
+endif
 
 TARGET_DEFINES_DALVIK_HEAP := true
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
@@ -10,11 +31,30 @@ RODUCT_PROPERTY_OVERRIDES  += \
    dalvik.vm.heapminfree=512k \
    dalvik.vm.heapmaxfree=8m
 
+ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
 # Enable chain partition for system, to facilitate system-only OTA in Treble.
 BOARD_AVB_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_SYSTEM_ROLLBACK_INDEX := 0
 BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+else
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_PACKAGES += fastbootd
+# Add default implementation of fastboot HAL.
+PRODUCT_PACKAGES += android.hardware.fastboot@1.0-impl-mock
+ifeq ($(ENABLE_AB), true)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+else
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+endif
+BOARD_AVB_VBMETA_SYSTEM := system
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+endif
+
+BOARD_AVB_ENABLE := true
 
 #target name, shall be used in all makefiles
 ATOLL = atoll
@@ -22,6 +62,12 @@ ATOLL = atoll
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
 $(call inherit-product, device/qcom/qssi/common64.mk)
+
+# Also, since we're going to skip building the system image, we also skip
+# building the OTA package. We'll build this at a later step. We also don't
+# need to build the OTA tools package (we'll use the one from the system build).
+TARGET_SKIP_OTA_PACKAGE := true
+TARGET_SKIP_OTATOOLS_PACKAGE := true
 
 PRODUCT_NAME := atoll
 PRODUCT_DEVICE := atoll
@@ -44,9 +90,6 @@ PRODUCT_BUILD_ODM_IMAGE := false
 PRODUCT_BUILD_CACHE_IMAGE := false
 PRODUCT_BUILD_RAMDISK_IMAGE := true
 PRODUCT_BUILD_USERDATA_IMAGE := true
-
-# Default A/B configuration.
-ENABLE_AB ?= true
 
 # RRO configuration
 TARGET_USES_RRO := true
