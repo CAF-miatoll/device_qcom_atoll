@@ -24,7 +24,7 @@ endif
 
 TARGET_DEFINES_DALVIK_HEAP := true
 #Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
-RODUCT_PROPERTY_OVERRIDES  += \
+PRODUCT_PROPERTY_OVERRIDES  += \
    dalvik.vm.heapstartsize=8m \
    dalvik.vm.heapsize=512m \
    dalvik.vm.heaptargetutilization=0.75 \
