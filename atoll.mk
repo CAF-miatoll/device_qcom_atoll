@@ -1,23 +1,81 @@
-# Enable AVB 2.0
-BOARD_AVB_ENABLE := true
+# Default A/B configuration.
+ENABLE_AB ?= true
 
+# Enable Dynamic partition and set API level to 29
+BOARD_DYNAMIC_PARTITION_ENABLE := true
+PRODUCT_SHIPPING_API_LEVEL := 29
+# f2fs utilities
+PRODUCT_PACKAGES += \
+ sg_write_buffer \
+ f2fs_io \
+ check_f2fs
 
+# Userdata checkpoint
+PRODUCT_PACKAGES += \
+ checkpoint_gc
+
+ifeq ($(ENABLE_AB), true)
+  AB_OTA_POSTINSTALL_CONFIG += \
+  RUN_POSTINSTALL_vendor=true \
+  POSTINSTALL_PATH_vendor=bin/checkpoint_gc \
+  FILESYSTEM_TYPE_vendor=ext4 \
+  POSTINSTALL_OPTIONAL_vendor=true
+endif
+
+TARGET_DEFINES_DALVIK_HEAP := true
+#Inherit all except heap growth limit from phone-xhdpi-2048-dalvik-heap.mk
+PRODUCT_PROPERTY_OVERRIDES  += \
+   dalvik.vm.heapstartsize=8m \
+   dalvik.vm.heapsize=512m \
+   dalvik.vm.heaptargetutilization=0.75 \
+   dalvik.vm.heapminfree=512k \
+   dalvik.vm.heapmaxfree=8m
+
+ifneq ($(strip $(BOARD_DYNAMIC_PARTITION_ENABLE)),true)
 # Enable chain partition for system, to facilitate system-only OTA in Treble.
 BOARD_AVB_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
 BOARD_AVB_SYSTEM_ALGORITHM := SHA256_RSA2048
 BOARD_AVB_SYSTEM_ROLLBACK_INDEX := 0
 BOARD_AVB_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+else
+PRODUCT_USE_DYNAMIC_PARTITIONS := true
+PRODUCT_PACKAGES += fastbootd
+# Add default implementation of fastboot HAL.
+PRODUCT_PACKAGES += android.hardware.fastboot@1.0-impl-mock
+ifeq ($(ENABLE_AB), true)
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_AB_dynamic_partition.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+else
+PRODUCT_COPY_FILES += $(LOCAL_PATH)/fstab_non_AB_dynamic_partition.qti:$(TARGET_COPY_OUT_RAMDISK)/fstab.qcom
+endif
+BOARD_AVB_VBMETA_SYSTEM := system
+BOARD_AVB_VBMETA_SYSTEM_KEY_PATH := external/avb/test/data/testkey_rsa2048.pem
+BOARD_AVB_VBMETA_SYSTEM_ALGORITHM := SHA256_RSA2048
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX := $(PLATFORM_SECURITY_PATCH_TIMESTAMP)
+BOARD_AVB_VBMETA_SYSTEM_ROLLBACK_INDEX_LOCATION := 2
+$(call inherit-product, build/make/target/product/gsi_keys.mk)
+endif
+
+BOARD_AVB_ENABLE := true
 
 #target name, shall be used in all makefiles
 ATOLL = atoll
 
 TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 
+# privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
+PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
+
 $(call inherit-product, device/qcom/qssi/common64.mk)
+
+# Also, since we're going to skip building the system image, we also skip
+# building the OTA package. We'll build this at a later step. We also don't
+# need to build the OTA tools package (we'll use the one from the system build).
+TARGET_SKIP_OTA_PACKAGE := true
+TARGET_SKIP_OTATOOLS_PACKAGE := true
 
 PRODUCT_NAME := atoll
 PRODUCT_DEVICE := atoll
-PRODUCT_BRAND := Android
+PRODUCT_BRAND := qti
 PRODUCT_MODEL := atoll for arm64
 
 #Initial bringup flags
@@ -36,9 +94,6 @@ PRODUCT_BUILD_ODM_IMAGE := false
 PRODUCT_BUILD_CACHE_IMAGE := false
 PRODUCT_BUILD_RAMDISK_IMAGE := true
 PRODUCT_BUILD_USERDATA_IMAGE := true
-
-# Default A/B configuration.
-ENABLE_AB ?= true
 
 # RRO configuration
 TARGET_USES_RRO := true
@@ -75,36 +130,34 @@ PRODUCT_PACKAGES += android.hardware.media.omx@1.0-impl
 #Audio DLKM
 AUDIO_DLKM := audio_apr.ko
 AUDIO_DLKM += audio_snd_event.ko
-AUDIO_DLKM += audio_wglink.ko
 AUDIO_DLKM += audio_q6_pdr.ko
 AUDIO_DLKM += audio_q6_notifier.ko
 AUDIO_DLKM += audio_adsp_loader.ko
 AUDIO_DLKM += audio_q6.ko
 AUDIO_DLKM += audio_usf.ko
-AUDIO_DLKM += audio_pinctrl_wcd.ko
 AUDIO_DLKM += audio_swr.ko
 AUDIO_DLKM += audio_wcd_core.ko
 AUDIO_DLKM += audio_swr_ctrl.ko
 AUDIO_DLKM += audio_wsa881x.ko
-#AUDIO_DLKM += audio_platform.ko
+AUDIO_DLKM += audio_platform.ko
 AUDIO_DLKM += audio_hdmi.ko
 AUDIO_DLKM += audio_stub.ko
 AUDIO_DLKM += audio_wcd9xxx.ko
 AUDIO_DLKM += audio_mbhc.ko
-AUDIO_DLKM += audio_wcd_spi.ko
 AUDIO_DLKM += audio_native.ko
-#AUDIO_DLKM += audio_machine_atoll.ko
-AUDIO_DLKM += audio_wcd934x.ko
+AUDIO_DLKM += audio_machine_atoll.ko
 AUDIO_DLKM += audio_pinctrl_lpi.ko
 AUDIO_DLKM += audio_wcd937x.ko
 AUDIO_DLKM += audio_wcd937x_slave.ko
 AUDIO_DLKM += audio_bolero_cdc.ko
+AUDIO_DLKM += audio_wcd938x.ko
+AUDIO_DLKM += audio_wcd938x_slave.ko
 AUDIO_DLKM += audio_wsa_macro.ko
 AUDIO_DLKM += audio_va_macro.ko
 AUDIO_DLKM += audio_rx_macro.ko
 AUDIO_DLKM += audio_tx_macro.ko
 
-#PRODUCT_PACKAGES += $(AUDIO_DLKM)
+PRODUCT_PACKAGES += $(AUDIO_DLKM)
 
 PRODUCT_PACKAGES += fs_config_files
 
@@ -172,9 +225,6 @@ PRODUCT_HOST_PACKAGES += \
 # MSM IRQ Balancer configuration file
 PRODUCT_COPY_FILES += device/qcom/atoll/msm_irqbalance.conf:$(TARGET_COPY_OUT_VENDOR)/etc/msm_irqbalance.conf
 
-# Powerhint configuration file
-PRODUCT_COPY_FILES += device/qcom/atoll/powerhint.xml:$(TARGET_COPY_OUT_VENDOR)/etc/powerhint.xml
-
 # Camera configuration file. Shared by passthrough/binderized camera HAL
 PRODUCT_PACKAGES += camera.device@3.2-impl
 PRODUCT_PACKAGES += camera.device@1.0-impl
@@ -186,6 +236,11 @@ PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
 PRODUCT_PACKAGES += \
     android.hardware.vibrator@1.0-impl \
     android.hardware.vibrator@1.0-service \
+
+#servicetracker HAL
+PRODUCT_PACKAGES += \
+    vendor.qti.hardware.servicetracker@1.1-impl \
+    vendor.qti.hardware.servicetracker@1.1-service \
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
@@ -229,6 +284,10 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #vendor prop to enable advanced network scanning
 PRODUCT_PROPERTY_OVERRIDES += \
     persist.vendor.radio.enableadvancedscan=true
+
+# Property to disable ZSL mode
+PRODUCT_PROPERTY_OVERRIDES += \
+    camera.disable_zsl_mode=1
 
 #Enable full treble flag
 PRODUCT_FULL_TREBLE_OVERRIDE := true
