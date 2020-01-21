@@ -250,7 +250,6 @@ endif
 BOARD_SYSTEMSDK_VERSIONS:=29
 BOARD_VNDK_VERSION:= current
 BUILD_BROKEN_DUP_RULES := true
-BUILD_BROKEN_PHONY_TARGETS := true
 
 #################################################################################
 # This is the End of BoardConfig.mk file.
