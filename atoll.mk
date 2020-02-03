@@ -65,7 +65,7 @@ TARGET_ENABLE_QC_AV_ENHANCEMENTS := true
 # privapp-permissions whitelisting (To Fix CTS :privappPermissionsMustBeEnforced)
 PRODUCT_PROPERTY_OVERRIDES += ro.control_privapp_permissions=enforce
 
-$(call inherit-product, device/qcom/qssi/common64.mk)
+$(call inherit-product, device/qcom/vendor-common/common64.mk)
 
 # Also, since we're going to skip building the system image, we also skip
 # building the OTA package. We'll build this at a later step. We also don't
