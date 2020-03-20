@@ -89,7 +89,7 @@ PRODUCT_BUILD_SYSTEM_IMAGE := false
 PRODUCT_BUILD_SYSTEM_OTHER_IMAGE := false
 PRODUCT_BUILD_VENDOR_IMAGE := true
 PRODUCT_BUILD_PRODUCT_IMAGE := false
-PRODUCT_BUILD_PRODUCT_SERVICES_IMAGE := false
+PRODUCT_BUILD_SYSTEM_EXT_IMAGE := false
 PRODUCT_BUILD_ODM_IMAGE := false
 PRODUCT_BUILD_CACHE_IMAGE := false
 PRODUCT_BUILD_RAMDISK_IMAGE := true
@@ -173,12 +173,6 @@ PRODUCT_PACKAGES += update_engine \
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
 
-PRODUCT_STATIC_BOOT_CONTROL_HAL := \
-  bootctrl.atoll \
-  librecovery_updater_msm \
-  libz \
-  libcutils
-
 PRODUCT_PACKAGES += \
   update_engine_sideload
 endif
@@ -202,10 +196,6 @@ PRODUCT_PACKAGES += \
 # Fingerprint feature
 PRODUCT_COPY_FILES += \
     frameworks/native/data/etc/android.hardware.fingerprint.xml:system/etc/permissions/android.hardware.fingerprint.xml \
-
-# Adding vendor manifest
-PRODUCT_COPY_FILES += \
-    device/qcom/atoll/manifest.xml:$(TARGET_COPY_OUT_VENDOR)/manifest.xml
 
 #ANT+ stack
 PRODUCT_PACKAGES += \
