@@ -37,6 +37,9 @@ BOARD_BLUETOOTH_BDROID_BUILDCFG_INCLUDE_DIR := device/qcom/common
 USE_OPENGL_RENDERER := true
 BOARD_USE_LEGACY_UI := true
 
+#Generate DTBO image
+BOARD_KERNEL_SEPARATED_DTBO := true
+
 ifeq ($(ENABLE_AB), true)
 # Defines for enabling A/B builds
 AB_OTA_UPDATER := true
@@ -74,6 +77,10 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
     else
         BOARD_RECOVERYIMAGE_PARTITION_SIZE := 0x04000000
         TARGET_RECOVERY_FSTAB := device/qcom/atoll/recovery_non-AB_variant.fstab
+        ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
+            # Enable DTBO for recovery image
+            BOARD_INCLUDE_RECOVERY_DTBO := true
+        endif
     endif
 else
 # Define the Dynamic Partition sizes and groups
@@ -84,6 +91,11 @@ else
         BOARD_SUPER_PARTITION_SIZE := 6442450944
         TARGET_RECOVERY_FSTAB := device/qcom/atoll/recovery_non-AB_dynamic_partition.fstab
     endif
+    ifeq ($(BOARD_KERNEL_SEPARATED_DTBO),true)
+        # Enable DTBO for recovery image
+        BOARD_INCLUDE_RECOVERY_DTBO := true
+    endif
+
 BOARD_SUPER_PARTITION_GROUPS := qti_dynamic_partitions
 BOARD_QTI_DYNAMIC_PARTITIONS_SIZE := 6438256640
 BOARD_QTI_DYNAMIC_PARTITIONS_PARTITION_LIST := vendor
@@ -234,9 +246,6 @@ USE_SENSOR_MULTI_HAL := true
 
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
-
-#Generate DTBO image
-BOARD_KERNEL_SEPARATED_DTBO := true
 
 #Enable LM
 TARGET_USES_LM := true
