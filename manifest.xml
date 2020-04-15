@@ -840,6 +840,15 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>objectTracker</instance>
         </interface>
     </hal>
+    <hal format="hidl">
+        <name>vendor.qti.power.pasrmanager</name>
+        <transport>hwbinder</transport>
+        <version>1.0</version>
+        <interface>
+            <name>IPasrManager</name>
+            <instance>default</instance>
+        </interface>
+    </hal>
     <!-- CVP hal services  -->
     <hal format="hidl">
         <name>vendor.qti.hardware.cvp</name>
