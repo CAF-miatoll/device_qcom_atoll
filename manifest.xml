@@ -584,10 +584,6 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <name>IDrmFactory</name>
             <instance>default</instance>
         </interface>
-        <fqname>@1.2::ICryptoFactory/clearkey</fqname>
-        <fqname>@1.2::IDrmFactory/clearkey</fqname>
-        <fqname>@1.2::ICryptoFactory/widevine</fqname>
-        <fqname>@1.2::IDrmFactory/widevine</fqname>
         <fqname>@1.1::ICryptoFactory/wfdhdcp</fqname>
         <fqname>@1.1::IDrmFactory/wfdhdcp</fqname>
     </hal>
@@ -817,7 +813,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>default</instance>
         </interface>
     </hal>
-    <!-- SCVE Panorama hal services -->
+    <!-- SCVE Panorama hal services
     <hal format="hidl">
         <name>vendor.qti.hardware.scve.panorama</name>
         <transport>hwbinder</transport>
@@ -839,7 +835,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <name>IObjectTracker</name>
             <instance>objectTracker</instance>
         </interface>
-    </hal>
+    </hal> -->
     <hal format="hidl">
         <name>vendor.qti.power.pasrmanager</name>
         <transport>hwbinder</transport>
@@ -849,7 +845,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>default</instance>
         </interface>
     </hal>
-    <!-- CVP hal services  -->
+    <!-- CVP hal services
     <hal format="hidl">
         <name>vendor.qti.hardware.cvp</name>
         <transport>hwbinder</transport>
@@ -858,7 +854,7 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <name>ICvp</name>
             <instance>cvphalservice</instance>
         </interface>
-    </hal>
+    </hal> -->
     <!-- Thermal HAL Service -->
     <hal format="hidl">
         <name>android.hardware.thermal</name>
