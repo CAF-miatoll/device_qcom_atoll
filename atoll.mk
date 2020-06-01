@@ -1,6 +1,8 @@
 # Default A/B configuration.
 ENABLE_AB ?= true
 
+SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
+
 # Enable Dynamic partition and set API level to 29
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 PRODUCT_SHIPPING_API_LEVEL := 29
