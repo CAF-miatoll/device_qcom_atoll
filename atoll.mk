@@ -2,6 +2,12 @@
 ENABLE_AB ?= true
 
 SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
+# Enable virtual-ab by default
+ENABLE_VIRTUAL_AB := true
+
+ifeq ($(ENABLE_VIRTUAL_AB), true)
+    $(call inherit-product, $(SRC_TARGET_DIR)/product/virtual_ab_ota.mk)
+endif
 
 # Enable Dynamic partition and set API level to 29
 BOARD_DYNAMIC_PARTITION_ENABLE := true
@@ -168,9 +174,9 @@ ifeq ($(ENABLE_AB), true)
 PRODUCT_PACKAGES += update_engine \
     update_engine_client \
     update_verifier \
-    bootctrl.atoll \
-    android.hardware.boot@1.0-impl \
-    android.hardware.boot@1.0-service
+    android.hardware.boot@1.1-impl-qti \
+    android.hardware.boot@1.1-impl-qti.recovery \
+    android.hardware.boot@1.1-service
 
 #Boot control HAL test app
 PRODUCT_PACKAGES_DEBUG += bootctl
@@ -180,9 +186,6 @@ PRODUCT_PACKAGES += \
 endif
 
 DEVICE_MANIFEST_FILE := device/qcom/atoll/manifest.xml
-ifeq ($(ENABLE_AB), true)
-DEVICE_MANIFEST_FILE += device/qcom/atoll/manifest_ab.xml
-endif
 DEVICE_MATRIX_FILE := device/qcom/common/compatibility_matrix.xml
 DEVICE_FRAMEWORK_MANIFEST_FILE := device/qcom/atoll/framework_manifest.xml
 DEVICE_FRAMEWORK_COMPATIBILITY_MATRIX_FILE += \

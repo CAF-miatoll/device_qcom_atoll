@@ -87,7 +87,11 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 else
 # Define the Dynamic Partition sizes and groups
     ifeq ($(ENABLE_AB), true)
-        BOARD_SUPER_PARTITION_SIZE := 12884901888
+        ifeq ($(ENABLE_VIRTUAL_AB), true)
+            BOARD_SUPER_PARTITION_SIZE := 6442450944
+        else
+            BOARD_SUPER_PARTITION_SIZE := 12884901888
+        endif
         TARGET_RECOVERY_FSTAB := device/qcom/atoll/recovery_AB_dynamic_partition.fstab
     else
         BOARD_SUPER_PARTITION_SIZE := 6442450944
