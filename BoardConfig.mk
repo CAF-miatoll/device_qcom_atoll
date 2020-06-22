@@ -40,6 +40,8 @@ BOARD_USE_LEGACY_UI := true
 #Generate DTBO image
 BOARD_KERNEL_SEPARATED_DTBO := true
 
+SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
+
 ifeq ($(ENABLE_AB), true)
 # Defines for enabling A/B builds
 AB_OTA_UPDATER := true
@@ -85,7 +87,11 @@ BOARD_BUILD_SYSTEM_ROOT_IMAGE := true
 else
 # Define the Dynamic Partition sizes and groups
     ifeq ($(ENABLE_AB), true)
-        BOARD_SUPER_PARTITION_SIZE := 12884901888
+        ifeq ($(ENABLE_VIRTUAL_AB), true)
+            BOARD_SUPER_PARTITION_SIZE := 6442450944
+        else
+            BOARD_SUPER_PARTITION_SIZE := 12884901888
+        endif
         TARGET_RECOVERY_FSTAB := device/qcom/atoll/recovery_AB_dynamic_partition.fstab
     else
         BOARD_SUPER_PARTITION_SIZE := 6442450944
@@ -177,6 +183,8 @@ ifneq (,$(filter userdebug eng, $(TARGET_BUILD_VARIANT)))
     endif
 endif
 
+BOARD_DO_NOT_STRIP_VENDOR_MODULES := true
+
 BOARD_VENDOR_KERNEL_MODULES += $(shell ls $(KERNEL_MODULES_OUT)/*.ko)
 TARGET_USES_ION := true
 TARGET_USES_NEW_ION_API :=true
@@ -246,9 +254,6 @@ USE_SENSOR_MULTI_HAL := true
 
 #Add non-hlos files to ota packages
 ADD_RADIO_FILES := true
-
-#Enable LM
-TARGET_USES_LM := true
 
 # Enable QG user space
 PMIC_QG_SUPPORT := true
