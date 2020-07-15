@@ -40,8 +40,6 @@ BOARD_USE_LEGACY_UI := true
 #Generate DTBO image
 BOARD_KERNEL_SEPARATED_DTBO := true
 
-SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
-
 ifeq ($(ENABLE_AB), true)
 # Defines for enabling A/B builds
 AB_OTA_UPDATER := true

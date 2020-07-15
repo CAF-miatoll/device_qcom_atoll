@@ -1,7 +1,6 @@
 # Default A/B configuration.
 ENABLE_AB ?= true
 
-SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 # Enable virtual-ab by default
 ENABLE_VIRTUAL_AB := true
 
