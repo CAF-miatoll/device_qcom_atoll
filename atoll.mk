@@ -283,6 +283,8 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #Enable Light AIDL HAL
 PRODUCT_PACKAGES += android.hardware.lights-service.qti
 
+# Enable incremental FS feature
+PRODUCT_PROPERTY_OVERRIDES += ro.incremental.enable=1
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
