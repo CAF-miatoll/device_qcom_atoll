@@ -10,7 +10,7 @@ endif
 
 # Enable Dynamic partition and set API level to 29
 BOARD_DYNAMIC_PARTITION_ENABLE := true
-PRODUCT_SHIPPING_API_LEVEL := 29
+PRODUCT_SHIPPING_API_LEVEL := 30
 # f2fs utilities
 PRODUCT_PACKAGES += \
  sg_write_buffer \
