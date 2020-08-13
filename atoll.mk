@@ -1,7 +1,6 @@
 # Default A/B configuration.
 ENABLE_AB ?= true
 
-SYSTEMEXT_SEPARATE_PARTITION_ENABLE = true
 # Enable virtual-ab by default
 ENABLE_VIRTUAL_AB := true
 
@@ -203,7 +202,6 @@ PRODUCT_PACKAGES += \
     libvolumelistener
 
 PRODUCT_PACKAGES += \
-    android.hardware.configstore@1.0-service \
     android.hardware.broadcastradio@1.0-impl
 
 PRODUCT_HOST_PACKAGES += \
@@ -219,11 +217,6 @@ PRODUCT_PACKAGES += camera.device@1.0-impl
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-impl
 # Enable binderized camera HAL
 PRODUCT_PACKAGES += android.hardware.camera.provider@2.4-service_64
-
-# Vibrator
-PRODUCT_PACKAGES += \
-    android.hardware.vibrator@1.0-impl \
-    android.hardware.vibrator@1.0-service \
 
 # MIDI feature
 PRODUCT_COPY_FILES += \
@@ -286,6 +279,12 @@ ENABLE_VENDOR_RIL_SERVICE := true
 PRODUCT_PROPERTY_OVERRIDES += \
 			ro.crypto.volume.filenames_mode = "aes-256-cts" \
 			ro.crypto.allow_encrypt_override = true
+
+#Enable Light AIDL HAL
+PRODUCT_PACKAGES += android.hardware.lights-service.qti
+
+# Enable incremental FS feature
+PRODUCT_PROPERTY_OVERRIDES += ro.incremental.enable=1
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
