@@ -281,6 +281,10 @@ ENABLE_VENDOR_RIL_SERVICE := true
 PRODUCT_PROPERTY_OVERRIDES += \
 			ro.crypto.volume.filenames_mode = "aes-256-cts"
 
+# Target specific Netflix custom property
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.netflix.bsp_rev=Q6250-19132-1
+
 #Enable Light AIDL HAL
 PRODUCT_PACKAGES += android.hardware.lights-service.qti
 
