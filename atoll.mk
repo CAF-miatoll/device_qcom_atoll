@@ -80,7 +80,6 @@ $(call inherit-product, device/qcom/vendor-common/common64.mk)
 # building the OTA package. We'll build this at a later step. We also don't
 # need to build the OTA tools package (we'll use the one from the system build).
 TARGET_SKIP_OTA_PACKAGE := true
-TARGET_SKIP_OTATOOLS_PACKAGE := true
 
 PRODUCT_NAME := atoll
 PRODUCT_DEVICE := atoll
