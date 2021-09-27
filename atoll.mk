@@ -11,6 +11,7 @@ endif
 # Enable Dynamic partition and set API level to 29
 BOARD_DYNAMIC_PARTITION_ENABLE := true
 PRODUCT_SHIPPING_API_LEVEL := 30
+
 # f2fs utilities
 PRODUCT_PACKAGES += \
  sg_write_buffer \
@@ -289,6 +290,13 @@ PRODUCT_PACKAGES += android.hardware.lights-service.qti
 
 # Enable incremental FS feature
 PRODUCT_PROPERTY_OVERRIDES += ro.incremental.enable=1
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.soc.manufacturer=QTI
+
+PRODUCT_PROPERTY_OVERRIDES += \
+    ro.soc.model=SM7125
+
 ###################################################################################
 # This is the End of target.mk file.
 # Now, Pickup other split product.mk files:
