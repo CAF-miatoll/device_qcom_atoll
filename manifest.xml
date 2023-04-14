@@ -731,4 +731,13 @@ IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
             <instance>embmsslServer0</instance>
         </interface>
     </hal>
+    <!-- Data Connectionfactory AIDL Service -->
+    <hal format="aidl">
+        <name>vendor.qti.hardware.data.connectionfactory</name>
+        <interface>
+            <name>IFactory</name>
+            <instance>slot0</instance>
+            <instance>slot1</instance>
+        </interface>
+    </hal>
 </manifest>
